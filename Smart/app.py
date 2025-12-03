@@ -4,7 +4,11 @@ from utils.network_models import NetworkOptimizer
 from utils.cost_simulator import CostSimulator
 import folium
 import plotly.express as px
-from streamlit_folium import folium_static
+try:
+    from streamlit_folium import folium_static
+except Exception:
+    folium_static = None
+    st.warning("Optional dependency `streamlit-folium` is not installed. Install with `pip install streamlit-folium` to enable interactive map rendering.")
 
 # Initialize core components
 optimizer = NetworkOptimizer()
@@ -121,9 +125,12 @@ elif current_tab == "🗺️ Geospatial":
             with st.spinner("Processing geospatial data..."):
                 st.session_state.map_data = analyzer.generate_map(veg_threshold)
                 stats = analyzer.get_statistics()
-                
+
                 st.subheader("Terrain Visualization")
-                folium_static(st.session_state.map_data)
+                if folium_static:
+                    folium_static(st.session_state.map_data)
+                else:
+                    st.error("Map rendering requires the `streamlit-folium` package. Run `pip install streamlit-folium` and restart the app.")
                 
                 cols = st.columns(3)
                 cols[0].metric("Total Area", f"{stats['area']} km²")
@@ -240,7 +247,10 @@ elif current_tab == "📊 Dashboard":
     # Coverage map
     st.subheader("Network Coverage")
     if st.session_state.map_data:
-        folium_static(st.session_state.map_data)
+        if folium_static:
+            folium_static(st.session_state.map_data)
+        else:
+            st.error("Map rendering requires the `streamlit-folium` package. Run `pip install streamlit-folium` and restart the app.")
     else:
         st.warning("Upload geospatial data in the 'Geospatial' tab to view coverage.")
     
@@ -266,5 +276,5 @@ elif current_tab == "📊 Dashboard":
 # Footer for every tab
 st.markdown("---")
 st.markdown("### 🛠️ **Developed By**")
-st.markdown("- **Muhammad Hanzala**: [khangormani79@gmail.com](mailto:khangormani79@gmail.com)")
-st.markdown("- **Amira Sayed**: [amira.sayedza@gmail.com](mailto:amira.sayedza@gmail.com)")
+st.markdown("- **mogaka mokaya**: [mokayaj857@gmail.com](mailto:mokayaj857@gmail.com)")
+st.markdown("- **mokaya mogaka**: [mokayaj857@gmail.com](mailto:mokayaj857@gmail.com)")
