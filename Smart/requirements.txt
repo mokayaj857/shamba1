@@ -1,0 +1,11 @@
+streamlit
+geopandas
+folium
+plotly
+python-dotenv
+openai
+requests
+numpy
+shapely
+pyproj
+rtree
