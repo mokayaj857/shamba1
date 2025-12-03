@@ -1,0 +1,164 @@
+# Data files (too large for git)
+data/
+*.csv
+*.json
+*.xlsx
+*.xls
+*.db
+*.sqlite
+*.h5
+*.hdf5
+*.parquet
+*.feather
+
+# Model files (can be regenerated)
+models/*.joblib
+models/*.pkl
+models/*.pth
+models/*.h5
+
+# Analysis outputs
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.pdf
+*.html
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.cursor/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Logs
+logs/
+*.log
+wandb/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Large files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Environment variables
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Next.js
+.next/
+/out/
+/build
+
+# Package lock files (keep only one)
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Database files
+agri_adapt_ai.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Generated reports and analysis
+reports/
+analysis/
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.pdf
+
+# Test files
+test_frontend.py
+test_*.py
+
+# Docker
+.dockerignore
+docker-compose*.yml
+Dockerfile*
+
+# Documentation build
+docs/_build/
+docs/api/_build/

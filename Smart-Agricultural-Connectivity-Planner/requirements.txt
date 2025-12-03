@@ -1,0 +1,11 @@
+streamlit>=1.42
+geopandas>=0.14
+folium>=0.19
+plotly>=5.22
+python-dotenv>=1.0
+openai>=1.30
+requests>=2.32
+numpy>=1.26
+shapely>=2.0
+pyproj>=3.6
+rtree>=1.0
