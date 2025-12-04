@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, Send, X, Shield } from 'lucide-react';
+import { MessageSquare, Send, X, Shield, Bot } from 'lucide-react';
 import bot from '../assets/bot.png';
 import bot1 from '../assets/bot1.png';
 import bot3 from '../assets/bot3.png';
@@ -67,7 +67,7 @@ const StunningChatbot = () => {
   const getBimaResponses = () => {
     return {
       greetings: [
-        "Hello! I'm the BIMA AI Assistant. I can help you navigate our decentralized land marketplace and answer questions about buying, selling, and verifying land on the blockchain.",
+        "Hello! I'm the MKULIMA AI Assistant. I can help you navigate our decentralized land marketplace and answer questions about buying, selling, and verifying land on the blockchain.",
         "Hi there! Welcome to BIMA. I'm here to help you with blockchain-secured land transactions and marketplace navigation."
       ],
       
@@ -124,52 +124,120 @@ const StunningChatbot = () => {
   };
 
   const fetchBotReply = async (userText: string): Promise<string> => {
-    const responses = getBimaResponses();
-    const intent = parseQueryIntent(userText);
-    
-    // Check for greeting patterns
-    const greetingPatterns = ['hello', 'hi', 'hey', 'good morning', 'good afternoon', 'good evening'];
-    if (greetingPatterns.some(pattern => containsPhrase(userText, pattern))) {
-      return responses.greetings[Math.floor(Math.random() * responses.greetings.length)];
+    // First, check if userText is empty or too short
+    if (!userText || userText.trim().length < 2) {
+      return "Please provide more details about your farming or market question so I can help you better.";
     }
-    
-    // Return intent-based response
-    const intentResponses = responses.intents[intent as keyof typeof responses.intents];
-    if (intentResponses && intentResponses.responses.length > 0) {
-      return intentResponses.responses[Math.floor(Math.random() * intentResponses.responses.length)];
+
+    // Add a small delay to prevent rate limiting
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    try {
+      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer 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'
+        },
+        body: JSON.stringify({
+          model: 'gpt-3.5-turbo',
+          messages: [
+            {
+              role: 'system',
+              content: `You are AkiLimo, an AI assistant for smallholder farmers in Kenya, specializing in climate risk modeling and market intelligence. Your role is to provide clear, actionable advice about farming, market prices, and logistics in Kenya.`
+            },
+            {
+              role: 'user',
+              content: userText
+            }
+          ],
+          temperature: 0.7,
+          max_tokens: 300
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('OpenAI API Error:', errorData);
+        
+        if (response.status === 429) {
+          return "I'm getting too many requests right now. Please wait a moment and try again.";
+        }
+        
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      // Add more robust error checking for the response structure
+      if (!data.choices || !Array.isArray(data.choices) || data.choices.length === 0) {
+        console.error('Unexpected API response format:', data);
+        return "I received an unexpected response. Could you please rephrase your question?";
+      }
+      
+      return data.choices[0]?.message?.content || "I'm not sure how to respond to that. Could you provide more details?";
+      
+    } catch (error) {
+      console.error('Error in fetchBotReply:', error);
+      
+      // Return a fallback response that helps the user
+      return `I'm having some technical difficulties. Here's what you can try:
+1. Check your internet connection
+2. Wait a moment and try again
+3. Ask a different question
+
+Error details: ${error.message || 'Unknown error'}`;
     }
-    
-    // Fallback response
-    return "I'm here to help with BIMA platform questions! You can ask me about buying land, selling property, wallet connections, or how our verification system works. What would you like to know?";
   };
 
   const handleSubmit = async () => {
-    if (!inputMessage.trim()) return;
+    const message = inputMessage.trim();
+    if (!message || isLoading) return;
     
+    // Add user message to chat
     const userMessage = { 
-      text: inputMessage, 
+      text: message, 
       sender: 'user',
       timestamp: new Date()
     };
+    
     setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
     setIsLoading(true);
+    
     try {
-      const botText = await fetchBotReply(userMessage.text);
-      const botMessage = { 
-        text: botText, 
+      // Show typing indicator
+      const typingIndicator = { 
+        text: '...', 
         sender: 'bot',
-        timestamp: new Date()
+        timestamp: new Date(),
+        isTyping: true
       };
-      setMessages(prev => [...prev, botMessage]);
-    } catch (err) {
-      console.error('Chat error:', err);
-      const botMessage = { 
-        text: 'Sorry, I had trouble reaching the AI service. Please try again.',
-        sender: 'bot',
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, botMessage]);
+      setMessages(prev => [...prev, typingIndicator]);
+      
+      // Get bot response
+      const botText = await fetchBotReply(message);
+      
+      // Remove typing indicator and add bot response
+      setMessages(prev => {
+        const updated = prev.filter(msg => !msg.isTyping);
+        return [...updated, { 
+          text: botText, 
+          sender: 'bot',
+          timestamp: new Date()
+        }];
+      });
+      
+    } catch (error) {
+      console.error('Chat error:', error);
+      setMessages(prev => {
+        const updated = prev.filter(msg => !msg.isTyping);
+        return [...updated, { 
+          text: 'Sorry, I encountered an error. Please try again in a moment.',
+          sender: 'bot',
+          timestamp: new Date()
+        }];
+      });
     } finally {
       setIsLoading(false);
     }
