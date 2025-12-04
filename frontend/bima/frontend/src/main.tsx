@@ -26,6 +26,10 @@ const router = createBrowserRouter([
   
   
   {
+    path: '/chat',
+    element: <Layout showHeader><Chatbot /></Layout>,
+  },
+  {
     path: '/land',
     element: <Layout showHeader><LandDetails /></Layout>,
     

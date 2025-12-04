@@ -271,7 +271,7 @@ const Index = () => {
                     <ChevronRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
                   </motion.button>
                 </a>
-                <Link to="/sell-land">
+                <a href="https://bimasentinel.streamlit.app/" target="_blank" rel="noopener noreferrer">
                   <motion.button
                     className="group relative px-8 py-4 bg-gradient-to-r from-primary to-accent text-white font-bold rounded-lg overflow-hidden flex items-center gap-3 text-lg shadow-[0_0_40px_rgba(59,130,246,1)] border-2 border-white/30 backdrop-blur-sm"
                     whileHover={{ scale: 1.05, boxShadow: "0 0 60px rgba(59,130,246,1)" }}
@@ -287,7 +287,7 @@ const Index = () => {
                     <span className="relative z-10">Get Started</span>
                     <ChevronRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
                   </motion.button>
-                </Link>
+                </a>
               </motion.div>
             </motion.div>
           </div>
