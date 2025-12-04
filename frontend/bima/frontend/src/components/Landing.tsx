@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { 
   ChevronRight, Shield, 
@@ -9,6 +10,18 @@ import {
 
 const Index = () => {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
+
+  // Farmer auth UI state
+  const [authTab, setAuthTab] = useState<'login' | 'signup'>('login');
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [signupName, setSignupName] = useState('');
+  const [signupEmail, setSignupEmail] = useState('');
+  const [signupPassword, setSignupPassword] = useState('');
+  const [authLoading, setAuthLoading] = useState(false);
+  const [authMessage, setAuthMessage] = useState<string | null>(null);
+
+  const { t } = useTranslation();
 
   // Image carousel data
   const carouselImages = [
@@ -48,6 +61,52 @@ const Index = () => {
 
   const prevSlide = () => {
     setCurrentSlide((prev: number) => (prev - 1 + carouselImages.length) % carouselImages.length);
+  };
+
+  // Auth handlers
+  const backendBase = (import.meta.env.VITE_BACKEND_API_URL || '').replace(/\/$/, '');
+
+  const handleLogin = async (e: any) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    setAuthMessage(null);
+    try {
+      const res = await fetch(`${backendBase}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: loginEmail, password: loginPassword })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || 'Login failed');
+      setAuthMessage('Login successful');
+      // Optionally store token: localStorage.setItem('token', data.access_token)
+    } catch (err: any) {
+      setAuthMessage(err.message || 'Login error');
+    } finally {
+      setAuthLoading(false);
+    }
+  };
+
+  const handleSignup = async (e: any) => {
+    e.preventDefault();
+    setAuthLoading(true);
+    setAuthMessage(null);
+    try {
+      const res = await fetch(`${backendBase}/api/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: signupName, email: signupEmail, password: signupPassword })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.message || 'Registration failed');
+      setAuthMessage('Registration successful. You can login now.');
+      setAuthTab('login');
+      setSignupName(''); setSignupEmail(''); setSignupPassword('');
+    } catch (err: any) {
+      setAuthMessage(err.message || 'Registration error');
+    } finally {
+      setAuthLoading(false);
+    }
   };
 
   const solutions = [
@@ -211,6 +270,7 @@ const Index = () => {
               className="mb-12"
             >
 
+              {/** i18n: keep brand name but use translation for main descriptor */}
               <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
                 <motion.span
                   className="inline-block bg-gradient-to-r from-white via-primary to-accent bg-clip-text text-transparent bg-[length:200%_auto] drop-shadow-lg"
@@ -226,7 +286,7 @@ const Index = () => {
                   AkiLimo
                 </motion.span>
                 <br className="leading-none" />
-                <span className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-none drop-shadow-lg">From Soil to Sale.</span>
+                <span className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-none drop-shadow-lg">{t('welcome_title')}</span>
               </h1>
 
               <motion.p
@@ -267,7 +327,7 @@ const Index = () => {
                       transition={{ duration: 0.3 }}
                     />
                     <TrendingUp className="w-6 h-6 relative z-10" />
-                    <span className="relative z-10">Check Resilience</span>
+                    <span className="relative z-10">{t('explore_marketplace')}</span>
                     <ChevronRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
                   </motion.button>
                 </a>
@@ -284,12 +344,98 @@ const Index = () => {
                       transition={{ duration: 0.3 }}
                     />
                     <MapPin className="w-6 h-6 relative z-10" />
-                    <span className="relative z-10">Get Started</span>
+                    <span className="relative z-10">{t('list_your_land')}</span>
                     <ChevronRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
                   </motion.button>
                 </Link>
               </motion.div>
             </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Farmer Auth Section */}
+      <section className="px-4 sm:px-6 lg:px-8 py-8">
+        <div className="max-w-3xl mx-auto bg-card/60 border border-border/40 rounded-xl p-6 backdrop-blur-sm">
+          <h3 className="text-xl font-bold text-center mb-4">Farmer Portal</h3>
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <button
+              onClick={() => setAuthTab('login')}
+              className={`px-4 py-2 rounded-md ${authTab === 'login' ? 'bg-green-500 text-white' : 'bg-transparent text-foreground border border-border/30'}`}
+            >
+              Login
+            </button>
+            <button
+              onClick={() => setAuthTab('signup')}
+              className={`px-4 py-2 rounded-md ${authTab === 'signup' ? 'bg-green-500 text-white' : 'bg-transparent text-foreground border border-border/30'}`}
+            >
+              Sign Up
+            </button>
+          </div>
+
+          <div>
+            {authMessage && (
+              <div className="mb-4 text-center text-sm text-white/90">{authMessage}</div>
+            )}
+
+            {authTab === 'login' ? (
+              <form onSubmit={handleLogin} className="grid grid-cols-1 gap-3">
+                <input
+                  type="email"
+                  required
+                  placeholder="Email"
+                  value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)}
+                  className="px-4 py-3 rounded-md bg-input text-foreground border border-border/30"
+                />
+                <input
+                  type="password"
+                  required
+                  placeholder="Password"
+                  value={loginPassword}
+                  onChange={(e) => setLoginPassword(e.target.value)}
+                  className="px-4 py-3 rounded-md bg-input text-foreground border border-border/30"
+                />
+                <div className="flex items-center justify-between">
+                  <button disabled={authLoading} type="submit" className="px-6 py-2 rounded-md bg-primary text-white font-semibold">
+                    {authLoading ? 'Logging in...' : 'Login'}
+                  </button>
+                  <a className="text-sm text-muted-foreground" href="#forgot">Forgot?</a>
+                </div>
+              </form>
+            ) : (
+              <form onSubmit={handleSignup} className="grid grid-cols-1 gap-3">
+                <input
+                  type="text"
+                  required
+                  placeholder="Full name"
+                  value={signupName}
+                  onChange={(e) => setSignupName(e.target.value)}
+                  className="px-4 py-3 rounded-md bg-input text-foreground border border-border/30"
+                />
+                <input
+                  type="email"
+                  required
+                  placeholder="Email"
+                  value={signupEmail}
+                  onChange={(e) => setSignupEmail(e.target.value)}
+                  className="px-4 py-3 rounded-md bg-input text-foreground border border-border/30"
+                />
+                <input
+                  type="password"
+                  required
+                  placeholder="Password"
+                  value={signupPassword}
+                  onChange={(e) => setSignupPassword(e.target.value)}
+                  className="px-4 py-3 rounded-md bg-input text-foreground border border-border/30"
+                />
+                <div className="flex items-center justify-end">
+                  <button disabled={authLoading} type="submit" className="px-6 py-2 rounded-md bg-primary text-white font-semibold">
+                    {authLoading ? 'Signing up...' : 'Create account'}
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </section>

@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './i18n';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import HowItWorks from './components/HowItWorks';
 import Landing from './components/Landing';
@@ -63,8 +65,10 @@ if (!rootElement) {
 }
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-    <ToastProvider>
-      <RouterProvider router={router} />
-    </ToastProvider>
+    <I18nextProvider i18n={i18n}>
+      <ToastProvider>
+        <RouterProvider router={router} />
+      </ToastProvider>
+    </I18nextProvider>
   </React.StrictMode>
 );

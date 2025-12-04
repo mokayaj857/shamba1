@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import LanguageSwitcher from './LanguageSwitcher';
 import { Link, useLocation } from 'react-router-dom';
 
 const Header: React.FC = () => {
@@ -103,6 +104,7 @@ const Header: React.FC = () => {
           </div>
 
           <div className="hidden lg:flex items-center gap-3">
+            <LanguageSwitcher />
             <ThemeToggle />
           </div>
 
@@ -148,7 +150,10 @@ const Header: React.FC = () => {
                 </Link>
               ))}
               <div className="flex items-center justify-between pt-4 border-t border-border/50">
-                <ThemeToggle />
+                <div className="flex items-center gap-2">
+                  <LanguageSwitcher />
+                  <ThemeToggle />
+                </div>
               </div>
             </div>
           </motion.div>

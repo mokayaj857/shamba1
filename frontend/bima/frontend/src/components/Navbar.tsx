@@ -2,16 +2,20 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { MapPin, Award, BarChart3 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar: React.FC = () => {
   const location = useLocation();
 
+  const { t } = useTranslation();
+
   const navItems = [
-    { path: '/', label: 'Home', icon: null },
-    { path: '/check-resilience', label: 'Marketplace', icon: MapPin },
-    { path: '/inspectors', label: 'Inspectors', icon: Award },
-    { path: '/how-it-works', label: 'How It Works', icon: null },
-    { path: '/ecosystem', label: 'Ecosystem', icon: BarChart3 }
+    { path: '/', label: t('home'), icon: null },
+    { path: '/check-resilience', label: t('marketplace'), icon: MapPin },
+    { path: '/inspectors', label: t('inspectors'), icon: Award },
+    { path: '/how-it-works', label: t('how_it_works'), icon: null },
+    { path: '/ecosystem', label: t('nav_market_intel'), icon: BarChart3 }
   ];
 
   return (
@@ -53,13 +57,16 @@ const Navbar: React.FC = () => {
             })}
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-card/50">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
+          {/* Right side (language switcher / mobile) */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center"><LanguageSwitcher /></div>
+            <div className="md:hidden">
+              <button className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-card/50">
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
       </div>
