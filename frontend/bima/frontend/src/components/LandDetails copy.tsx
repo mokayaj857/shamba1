@@ -2,9 +2,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Map, Layers, Mountain, Trees, Droplets, ZoomIn, Settings,
   Upload, MapPin, Activity, TrendingUp, Navigation, Gauge,
-  Target, CheckCircle2, Info, Maximize2, X
+  Target, CheckCircle2, Info, Maximize2, X, LandPlot, Compass
 } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { api } from "../lib/api";
 
 interface GeospatialMetrics {
   avgElevation: number;
@@ -45,7 +46,34 @@ export default function GeospatialAnalysis() {
   const [elevationFilter, setElevationFilter] = useState(1500);
   const [isDragging, setIsDragging] = useState(false);
   const [showGuide, setShowGuide] = useState(true);
+  const [landData, setLandData] = useState<any>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  
+  // Load sample land data
+  useEffect(() => {
+    const loadSampleData = async () => {
+      try {
+        // This would be replaced with actual API call in production
+        const mockData = {
+          id: 'sample-land-123',
+          title: 'Prime Agricultural Land',
+          location: 'Nakuru, Kenya',
+          size: '5 acres',
+          price: '5,000,000 KES',
+          status: 'verified',
+          owner: 'John Kamau',
+          description: 'Prime agricultural land with good road access and water supply.',
+          coordinates: [-1.2921, 36.8219],
+          features: ['Arable Land', 'Water Access', 'Road Access']
+        };
+        setLandData(mockData);
+      } catch (error) {
+        console.error('Error loading land data:', error);
+      }
+    };
+    
+    loadSampleData();
+  }, []);
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -88,24 +116,29 @@ export default function GeospatialAnalysis() {
     
     setAnalyzing(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2500));
-    
-    const baseElevation = elevationFilter;
-    const mockMetrics: GeospatialMetrics = {
-      avgElevation: baseElevation + (Math.random() * 100 - 50),
-      minElevation: baseElevation - (100 + Math.random() * 100),
-      maxElevation: baseElevation + (100 + Math.random() * 150),
-      vegetationDensity: Math.min(100, vegetationThreshold + (Math.random() * 20 - 10)),
-      waterBodies: Math.floor(Math.random() * 8) + 2,
-      terrainSuitability: Math.floor(65 + Math.random() * 30),
-      optimalNodeLocations: Math.floor(Math.random() * 12) + 5,
-      slopeAnalysis: Math.floor(Math.random() * 100),
-      soilQuality: Math.floor(60 + Math.random() * 35)
-    };
-    
-    setGeospatialData(mockMetrics);
-    setAnalyzing(false);
+    try {
+      // Simulate API call with a delay
+      await new Promise(resolve => setTimeout(resolve, 2500));
+      
+      const baseElevation = elevationFilter;
+      const mockMetrics: GeospatialMetrics = {
+        avgElevation: baseElevation + (Math.random() * 100 - 50),
+        minElevation: baseElevation - (100 + Math.random() * 100),
+        maxElevation: baseElevation + (100 + Math.random() * 150),
+        vegetationDensity: Math.min(100, vegetationThreshold + (Math.random() * 20 - 10)),
+        waterBodies: Math.floor(Math.random() * 8) + 2,
+        terrainSuitability: Math.floor(65 + Math.random() * 30),
+        optimalNodeLocations: Math.floor(Math.random() * 12) + 5,
+        slopeAnalysis: Math.floor(Math.random() * 100),
+        soilQuality: Math.floor(60 + Math.random() * 35)
+      };
+      
+      setGeospatialData(mockMetrics);
+    } catch (error) {
+      console.error('Analysis failed:', error);
+    } finally {
+      setAnalyzing(false);
+    }
   };
 
   const resetAnalysis = () => {
@@ -169,6 +202,27 @@ export default function GeospatialAnalysis() {
         <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-green-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
         <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-500" />
       </div>
+      
+      {/* Land Information Banner */}
+      {landData && (
+        <div className="bg-gradient-to-r from-blue-900/50 to-green-900/50 border-b border-blue-800/50">
+          <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <LandPlot className="w-5 h-5 text-blue-400" />
+              <div>
+                <h3 className="font-semibold text-white">{landData.title}</h3>
+                <p className="text-xs text-blue-200">{landData.location} • {landData.size}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-1 text-xs rounded-full bg-green-500/20 text-green-300 border border-green-500/30">
+                {landData.status}
+              </span>
+              <span className="text-sm font-medium text-white">{landData.price}</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Header */}
       <section className="relative py-16 px-4">
