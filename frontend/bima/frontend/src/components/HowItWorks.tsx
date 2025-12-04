@@ -1,81 +1,175 @@
 import { motion } from "framer-motion";
-import { FileText, Shield, Coins, CheckCircle, ArrowRight, Zap, Users, MapPin, Award, Globe } from "lucide-react";
+import { TrendingUp, DollarSign, BarChart3, LineChart, Calendar, ArrowUpRight, CheckCircle } from "lucide-react";
+import { useState } from "react";
 
-const steps = [
+// Sample data - will be replaced with backend API calls
+const performanceData = [
+  { month: "Jan", connectivity: 65, yield: 45, roi: 20 },
+  { month: "Feb", connectivity: 70, yield: 52, roi: 28 },
+  { month: "Mar", connectivity: 75, yield: 61, roi: 38 },
+  { month: "Apr", connectivity: 82, yield: 68, roi: 45 },
+  { month: "May", connectivity: 88, yield: 75, roi: 58 },
+  { month: "Jun", connectivity: 92, yield: 82, roi: 67 },
+];
+
+const roiMetrics = [
   {
-    number: "01",
-    title: "Seller Lists Land",
-    description: "Property owner uploads documents and creates a verified listing on the BIMA platform",
-    icon: FileText,
+    label: "Total Investment",
+    value: "$2.4M",
+    subtext: "Infrastructure & Operations",
+    icon: DollarSign,
     color: "from-emerald-500 to-teal-600",
-    details: [
-      "Upload ownership documents to IPFS",
-      "Set property details and pricing", 
-      "Submit for multi-signature verification",
-      "Track verification progress in real-time"
-    ],
-    stakeholder: "Land Sellers",
-    benefit: "Transparent, fraud-proof listing process"
+    change: "Initial Capital"
   },
   {
-    number: "02", 
-    title: "Multi-Signature Verification",
-    description: "Trusted inspectors conduct on-ground verification and sign off via decentralized consensus (Substrate)",
-    icon: Shield,
+    label: "Current Returns",
+    value: "$1.6M",
+    subtext: "Revenue Generated",
+    icon: TrendingUp,
     color: "from-blue-500 to-indigo-600",
-    details: [
-      "Automatic inspector assignment based on location",
-      "Physical verification by local chiefs/surveyors",
-      "Dual-signature consensus requirement",
-      "Reputation NFTs earned for honest verification"
-    ],
-    stakeholder: "Trusted Inspectors",
-    benefit: "Community-driven trust and accountability"
+    change: "+23% Growth"
   },
   {
-    number: "03",
-    title: "Tokenized on Polkadot",
-    description: "Title is minted as an NFT via Substrate pallets, creating immutable proof of ownership",
-    icon: Coins,
-    color: "from-purple-500 to-violet-600", 
-    details: [
-      "NFT minting via custom Substrate pallet",
-      "On-chain escrow for payments",
-      "Instant ownership transfer on purchase",
-      "Permanent on-chain ownership record"
-    ],
-    stakeholder: "Land Buyers",
-    benefit: "Instant, secure, immutable ownership"
+    label: "Break-Even Timeline",
+    value: "18 months",
+    subtext: "Projected Q3 2025",
+    icon: Calendar,
+    color: "from-purple-500 to-violet-600",
+    change: "On Track"
+  },
+  {
+    label: "ROI Percentage",
+    value: "67%",
+    subtext: "YTD Performance",
+    icon: BarChart3,
+    color: "from-orange-500 to-red-600",
+    change: "+12% QoQ"
   }
 ];
 
-const keyFeatures = [
-  {
-    icon: Globe,
-    title: "Decentralized Identifiers (DIDs)",
-    description: "All participants use verifiable digital identities, reducing fraud and ensuring authenticity"
-  },
-  {
-    icon: Award,
-    title: "Reputation NFTs",
-    description: "Inspectors earn non-transferable NFTs reflecting their credibility (Bronze, Silver, Gold)"
-  },
-  {
-    icon: Zap,
-    title: "Smart Escrow Payments",
-    description: "DOT payments automatically held and released upon verified title transfer"
-  },
-  {
-    icon: MapPin,
-    title: "Transparency Layer",
-    description: "All interactions visible on Polkadot ledger for full traceability"
-  }
-];
+const PerformanceChart = () => {
+  const [activeMetric, setActiveMetric] = useState("connectivity");
+  
+  const maxValue = 100;
+  const getMetricColor = () => {
+    if (activeMetric === "connectivity") return "from-blue-500 to-indigo-600";
+    if (activeMetric === "yield") return "from-emerald-500 to-teal-600";
+    return "from-purple-500 to-violet-600";
+  };
+  
+  return (
+    <div className="space-y-8">
+      {/* Metric Selector */}
+      <div className="flex gap-3 flex-wrap justify-center">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setActiveMetric("connectivity")}
+          className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+            activeMetric === "connectivity"
+              ? "bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/30"
+              : "bg-card/50 text-muted-foreground hover:bg-card border border-border"
+          }`}
+        >
+          Connectivity Score
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setActiveMetric("yield")}
+          className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+            activeMetric === "yield"
+              ? "bg-gradient-to-r from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/30"
+              : "bg-card/50 text-muted-foreground hover:bg-card border border-border"
+          }`}
+        >
+          Yield Improvement
+        </motion.button>
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setActiveMetric("roi")}
+          className={`px-6 py-3 rounded-xl text-sm font-semibold transition-all duration-300 ${
+            activeMetric === "roi"
+              ? "bg-gradient-to-r from-purple-500 to-violet-600 text-white shadow-lg shadow-purple-500/30"
+              : "bg-card/50 text-muted-foreground hover:bg-card border border-border"
+          }`}
+        >
+          ROI Progress
+        </motion.button>
+      </div>
 
-export default function HowItWorks() {
+      {/* Chart */}
+      <div className="relative h-80 flex items-end justify-between gap-4 p-8 rounded-2xl bg-card/30 border border-border/50">
+        {/* Y-axis labels */}
+        <div className="absolute left-4 top-8 bottom-16 flex flex-col justify-between text-xs text-muted-foreground">
+          <span>100%</span>
+          <span>75%</span>
+          <span>50%</span>
+          <span>25%</span>
+          <span>0%</span>
+        </div>
+
+        {/* Chart bars */}
+        <div className="flex-1 flex items-end justify-around gap-3 ml-8">
+          {performanceData.map((data, index) => {
+            const value = data[activeMetric];
+            const height = (value / maxValue) * 100;
+            
+            return (
+              <div key={data.month} className="flex-1 flex flex-col items-center gap-3">
+                <motion.div
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: `${height}%`, opacity: 1 }}
+                  transition={{ duration: 0.8, delay: index * 0.1, ease: "easeOut" }}
+                  className={`w-full rounded-t-xl bg-gradient-to-t ${getMetricColor()} relative group cursor-pointer min-h-[20px] shadow-lg`}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  {/* Hover tooltip */}
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    whileHover={{ opacity: 1, y: -40 }}
+                    className="absolute -top-12 left-1/2 -translate-x-1/2 bg-card border border-primary/50 px-3 py-2 rounded-lg text-sm font-bold whitespace-nowrap shadow-xl z-10"
+                  >
+                    <span className="text-primary">{value}%</span>
+                  </motion.div>
+                  
+                  {/* Shine effect */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-transparent to-white/20 rounded-t-xl" />
+                </motion.div>
+                <span className="text-sm text-muted-foreground font-semibold">{data.month}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Chart Legend & Stats */}
+      <div className="flex items-center justify-between px-4">
+        <div className="flex items-center gap-3">
+          <div className={`w-4 h-4 rounded bg-gradient-to-r ${getMetricColor()}`} />
+          <span className="text-sm text-muted-foreground font-medium">
+            {activeMetric === "connectivity" && "Network Coverage Performance"}
+            {activeMetric === "yield" && "Agricultural Yield Growth"}
+            {activeMetric === "roi" && "Return on Investment Trend"}
+          </span>
+        </div>
+        <div className="flex items-center gap-2 text-emerald-400">
+          <ArrowUpRight className="w-4 h-4" />
+          <span className="text-sm font-semibold">
+            {activeMetric === "connectivity" && "+42%"}
+            {activeMetric === "yield" && "+82%"}
+            {activeMetric === "roi" && "+235%"}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default function ImpactTracker() {
   return (
     <div className="min-h-screen bg-background">
-      {/* Hero Section */}
       <section className="relative py-24 px-4 overflow-hidden">
         {/* Animated Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
@@ -123,12 +217,12 @@ export default function HowItWorks() {
               transition={{ duration: 0.5 }}
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/20 to-accent/20 border border-primary/20 mb-6"
             >
-              <Zap className="w-4 h-4 text-primary" />
-              <span className="text-sm font-semibold text-foreground">Revolutionary Process</span>
+              <BarChart3 className="w-4 h-4 text-primary" />
+              <span className="text-sm font-semibold text-foreground">Real-Time Analytics</span>
             </motion.div>
 
             <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent animate-gradient-shift bg-[length:200%_auto]">
-              How BIMA Works
+              Impact Tracker
             </h1>
             
             <motion.p
@@ -138,8 +232,7 @@ export default function HowItWorks() {
               transition={{ delay: 0.2 }}
               className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8"
             >
-              Three simple steps to revolutionize land ownership with Polkadot/Substrate technology, 
-              community verification, and tokenized titles on-chain
+              Track connectivity scores, yield improvements, and ROI timelines with actionable insights
             </motion.p>
 
             <motion.div
@@ -149,213 +242,101 @@ export default function HowItWorks() {
               transition={{ delay: 0.4 }}
               className="flex flex-wrap justify-center gap-4 text-sm"
             >
-              <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full">🌍 Emerging Economies</span>
-              <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full">⚡ Polkadot Powered</span>
-              <span className="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full">🔒 Community Verified</span>
+              <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full">📊 ROI Analysis</span>
+              <span className="px-3 py-1 bg-emerald-500/20 text-emerald-400 rounded-full">📈 Performance Tracking</span>
+              <span className="px-3 py-1 bg-purple-500/20 text-purple-400 rounded-full">⚡ Real-Time Data</span>
             </motion.div>
           </motion.div>
 
-          {/* Steps Flow */}
-          <div className="relative">
-            {/* Connection Line */}
-            <motion.div
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1.5, ease: "easeInOut", delay: 0.3 }}
-              className="absolute top-1/4 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 via-blue-500 to-purple-500 hidden lg:block transform origin-left"
-              style={{ top: "120px" }}
-            />
+          {/* ROI Analysis Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-24"
+          >
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold mb-3">
+                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">ROI Analysis</span>
+              </h2>
+              <p className="text-muted-foreground">Financial performance metrics and investment returns</p>
+            </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-4">
-              {steps.map((step, index) => {
-                const StepIcon = step.icon;
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {roiMetrics.map((metric, index) => {
+                const MetricIcon = metric.icon;
                 return (
                   <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 50 }}
+                    key={metric.label}
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.2 }}
-                    className="relative"
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ y: -8, scale: 1.02 }}
+                    className="relative p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-2xl group"
                   >
-                    {/* Step Card */}
+                    {/* Icon */}
                     <motion.div
-                      whileHover={{ y: -8, scale: 1.02 }}
-                      transition={{ type: "spring", stiffness: 300 }}
-                      className="relative p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-2xl group"
+                      animate={{
+                        rotate: [0, 5, -5, 0],
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                      className="mb-6"
                     >
-                      {/* Step Number Badge */}
-                      <motion.div
-                        initial={{ scale: 0, rotate: -180 }}
-                        whileInView={{ scale: 1, rotate: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ 
-                          type: "spring", 
-                          stiffness: 200,
-                          delay: index * 0.2 + 0.3 
-                        }}
-                        className="absolute -top-4 -left-4 w-16 h-16 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center border-4 border-background shadow-lg"
-                      >
-                        <span className="text-2xl font-bold text-primary-foreground">
-                          {step.number}
-                        </span>
-                      </motion.div>
-
-                      {/* Icon */}
-                      <motion.div
-                        animate={{
-                          rotate: [0, 5, -5, 0],
-                        }}
-                        transition={{
-                          duration: 3,
-                          repeat: Infinity,
-                          ease: "easeInOut"
-                        }}
-                        className="mb-6 mt-4"
-                      >
-                        <div className={`w-24 h-24 mx-auto rounded-2xl bg-gradient-to-br ${step.color} p-1 group-hover:scale-110 transition-transform duration-300`}>
-                          <div className="w-full h-full bg-card rounded-xl flex items-center justify-center">
-                            <StepIcon className="w-12 h-12 text-primary" />
-                          </div>
+                      <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${metric.color} p-1 group-hover:scale-110 transition-transform duration-300`}>
+                        <div className="w-full h-full bg-card rounded-xl flex items-center justify-center">
+                          <MetricIcon className="w-8 h-8 text-primary" />
                         </div>
-                      </motion.div>
-
-                      {/* Content */}
-                      <h3 className="text-2xl font-bold mb-3 text-foreground">
-                        {step.title}
-                      </h3>
-                      <p className="text-muted-foreground mb-6 leading-relaxed">
-                        {step.description}
-                      </p>
-
-                      {/* Details List */}
-                      <div className="space-y-2 mb-6">
-                        {step.details.map((detail, idx) => (
-                          <motion.div
-                            key={idx}
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.2 + idx * 0.1 + 0.5 }}
-                            className="flex items-center gap-2 text-sm"
-                          >
-                            <CheckCircle className="w-4 h-4 text-primary flex-shrink-0" />
-                            <span className="text-muted-foreground">{detail}</span>
-                          </motion.div>
-                        ))}
                       </div>
-
-                      {/* Stakeholder & Benefit */}
-                      <div className="pt-4 border-t border-border/50">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Users className="w-4 h-4 text-accent" />
-                          <span className="text-sm font-semibold text-accent">{step.stakeholder}</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground">
-                          <strong className="text-primary">Benefit:</strong> {step.benefit}
-                        </p>
-                      </div>
-
-                      {/* Hover Glow Effect */}
-                      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 to-accent/0 group-hover:from-primary/5 group-hover:to-accent/5 transition-all duration-300 pointer-events-none" />
                     </motion.div>
 
-                    {/* Arrow Between Steps (Desktop) */}
-                    {index < steps.length - 1 && (
-                      <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.2 + 0.5 }}
-                        className="hidden lg:flex absolute top-28 -right-6 z-10"
-                      >
-                        <motion.div
-                          animate={{
-                            x: [0, 8, 0],
-                          }}
-                          transition={{
-                            duration: 2,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                          }}
-                        >
-                          <ArrowRight className="w-12 h-12 text-primary drop-shadow-lg" />
-                        </motion.div>
-                      </motion.div>
-                    )}
-                    {/* Arrow Between Steps (Mobile) */}
-                    {index < steps.length - 1 && (
-                      <motion.div
-                        initial={{ opacity: 0, y: -20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.2 + 0.5 }}
-                        className="flex lg:hidden justify-center my-6"
-                      >
-                        <motion.div
-                          animate={{
-                            y: [0, 8, 0],
-                          }}
-                          transition={{
-                            duration: 2,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                          }}
-                          className="rotate-90"
-                        >
-                          <ArrowRight className="w-12 h-12 text-primary drop-shadow-lg" />
-                        </motion.div>
-                      </motion.div>
-                    )}
+                    {/* Content */}
+                    <p className="text-sm text-muted-foreground mb-2">{metric.label}</p>
+                    <p className="text-3xl font-bold text-foreground mb-2">{metric.value}</p>
+                    <p className="text-xs text-muted-foreground mb-4">{metric.subtext}</p>
+
+                    {/* Change indicator */}
+                    <div className="flex items-center gap-2">
+                      <CheckCircle className="w-4 h-4 text-primary" />
+                      <span className="text-xs text-primary font-semibold">{metric.change}</span>
+                    </div>
+
+                    {/* Hover Glow Effect */}
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 to-accent/0 group-hover:from-primary/5 group-hover:to-accent/5 transition-all duration-300 pointer-events-none" />
                   </motion.div>
                 );
               })}
             </div>
-          </div>
+          </motion.div>
 
-          {/* Key Innovation Features */}
+          {/* Performance Over Time Section */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 1.0 }}
-            className="mt-32"
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <h2 className="text-4xl font-bold text-center mb-4">
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Key Innovation Features</span>
-            </h2>
-            <p className="text-lg text-muted-foreground text-center max-w-3xl mx-auto mb-16">
-              BIMA leverages Polkadot/Substrate technology to create a transparent, secure, and efficient land ownership ecosystem
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {keyFeatures.map((feature, index) => (
-                <motion.div
-                  key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 1.1 + index * 0.1 }}
-                  whileHover={{ y: -5, scale: 1.02 }}
-                  className="p-6 rounded-xl bg-card/40 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all duration-300 hover:shadow-lg group"
-                >
-                  <motion.div
-                    className="inline-flex p-3 rounded-lg bg-gradient-to-br from-primary/20 to-accent/20 mb-4"
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    <feature.icon className="w-6 h-6 text-primary" />
-                  </motion.div>
-                  <h3 className="text-lg font-bold mb-2 group-hover:text-primary transition-colors">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {feature.description}
-                  </p>
-                </motion.div>
-              ))}
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold mb-3">
+                <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Performance Over Time</span>
+              </h2>
+              <p className="text-muted-foreground">Monitor progress across connectivity, yield, and ROI metrics</p>
             </div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+              className="p-8 rounded-2xl bg-card/50 backdrop-blur-sm border border-border hover:border-primary/30 transition-all duration-300"
+            >
+              <PerformanceChart />
+            </motion.div>
           </motion.div>
 
           {/* Bottom CTA */}
@@ -363,7 +344,7 @@ export default function HowItWorks() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 1.4 }}
+            transition={{ delay: 0.6 }}
             className="mt-20 text-center"
           >
             <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-card/50 backdrop-blur-sm border border-primary/20">
@@ -379,7 +360,7 @@ export default function HowItWorks() {
                 className="w-2 h-2 rounded-full bg-primary"
               />
               <span className="text-sm font-medium text-foreground">
-                Powered by <span className="font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Polkadot / Substrate</span>
+                Live data updates • Powered by <span className="font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">real-time analytics</span>
               </span>
             </div>
           </motion.div>
