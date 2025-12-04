@@ -52,22 +52,22 @@ const Index = () => {
 
   const solutions = [
     {
-      icon: Shield,
-      title: "Tokenized Land Titles",
-      description: "NFTs via Substrate on Polkadot represent immutable ownership proof",
-      benefit: "Eliminates fraud"
+      icon: Award,
+      title: "Production Layer",
+      description: "Input location & soil data. Our Random Forest model predicts exact harvest tonnage.",
+      benefit: "Reduces risk",
     },
     {
       icon: Award,
-      title: "Multi-Sig Verification",
-      description: "Trusted inspectors validate through blockchain consensus",
-      benefit: "Community trust"
+      title: "Connectivity Layer",
+      description: "We don't just calculate distance. We calculate 'Effort Distance' based on terrain & road rugosity.",
+      benefit: "Saves Fuel"
     },
     {
       icon: Zap,
-      title: "Smart Escrow",
-      description: "Automated payments upon verified title transfer",
-      benefit: "Instant settlement"
+      title: "Profit Layer",
+      description: "Compare prices across hubs (Nairobi vs Nakuru) against the real cost of transport.",
+      benefit: "Maximizes profit"
     },
   ];
 
@@ -210,30 +210,6 @@ const Index = () => {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="mb-12"
             >
-            {/* Powered by Polkadot Badge */}
-            <motion.div
-              className="inline-flex items-center gap-3 px-6 py-3 mb-1 rounded-full bg-gradient-to-r from-primary/20 via-primary/10 to-transparent border border-primary/30 backdrop-blur-sm"
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ type: "spring", duration: 1, delay: 0.2 }}
-              whileHover={{ scale: 1.05 }}
-            >
-              <Shield className="w-6 h-6 text-accent" />
-              <span className="text-xs font-semibold text-primary tracking-wider uppercase">
-                Powered by Polkadot
-              </span>
-              <motion.div
-                className="w-2 h-2 rounded-full bg-primary"
-                animate={{
-                  scale: [1, 1.5, 1],
-                  opacity: [1, 0.5, 1],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                }}
-              />
-            </motion.div>
 
               <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
                 <motion.span
@@ -247,10 +223,10 @@ const Index = () => {
                     ease: "linear",
                   }}
                 >
-                  BIMA
+                  AkiLimo
                 </motion.span>
                 <br className="leading-none" />
-                <span className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-none drop-shadow-lg">Decentralized Land Marketplace</span>
+                <span className="text-white text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-none drop-shadow-lg">From Soil to Sale.</span>
               </h1>
 
               <motion.p
@@ -259,7 +235,7 @@ const Index = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                Trust • Speed • On-Chain Security
+            The first platform to unify <span className="text-emerald-400 font-bold">Yield Prediction</span> with <span className="text-emerald-400 font-bold">Geospatial Logistics</span> 
               </motion.p>
 
               <motion.p
@@ -268,7 +244,7 @@ const Index = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.7 }}
               >
-                Secure land transactions with Polkadot-verified ownership
+                To solve the double tragedy of climate uncertainty and market isolation.
               </motion.p>
 
               {/* CTA Buttons */}
@@ -375,7 +351,7 @@ const Index = () => {
             transition={{ delay: 1.8 }}
           >
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-4">
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">How BIMA Works</span>
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">How AkiLimo Works</span>
             </h2>
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-12">
               <span className="text-foreground">Three simple steps to secure, transparent land transactions</span>
@@ -404,13 +380,13 @@ const Index = () => {
                   </div>
                   
                   <div className="relative z-10 text-center">
-                    <h3 className="text-xl font-bold mb-4 text-foreground group-hover:text-green-400 transition-colors">List Your Property</h3>
-                    <p className="text-muted-foreground leading-relaxed">Upload land documents and create a verified listing on the blockchain marketplace with complete transparency</p>
+                    <h3 className="text-xl font-bold mb-4 text-foreground group-hover:text-green-400 transition-colors">Forecast Your Yield</h3>
+                    <p className="text-muted-foreground leading-relaxed">Input soil and rainfall data to predict harvest volumes using our Random Forest regression model</p>
                     
                     {/* Feature badge */}
                     <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-semibold text-green-400">
                       <MapPin className="w-3 h-3" />
-                      Document Upload
+                      AI Yield Prediction
                     </div>
                   </div>
                 </div>
@@ -438,13 +414,13 @@ const Index = () => {
                   </div>
                   
                   <div className="relative z-10 text-center">
-                    <h3 className="text-xl font-bold mb-4 text-foreground group-hover:text-green-400 transition-colors">Community Verification</h3>
-                    <p className="text-muted-foreground leading-relaxed">Trusted inspectors validate ownership and property details through multi-signature consensus protocols</p>
+                    <h3 className="text-xl font-bold mb-4 text-foreground group-hover:text-green-400 transition-colors">Optimize Logistics</h3>
+                    <p className="text-muted-foreground leading-relaxed">Calculate "Effort Distance" by analyzing terrain elevation and road rugosity to find the cheapest route</p>
                     
                     {/* Feature badge */}
                     <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-semibold text-green-400">
                       <Award className="w-3 h-3" />
-                      Multi-Sig Consensus
+                      Geospatial Routing
                     </div>
                   </div>
                 </div>
@@ -472,13 +448,13 @@ const Index = () => {
                   </div>
                   
                   <div className="relative z-10 text-center">
-                    <h3 className="text-xl font-bold mb-4 text-foreground group-hover:text-green-400 transition-colors">Secure Transaction</h3>
-                    <p className="text-muted-foreground leading-relaxed">Complete instant, fraud-proof transactions with automated escrow and seamless title transfer</p>
+                    <h3 className="text-xl font-bold mb-4 text-foreground group-hover:text-green-400 transition-colors">Maximize Net Profit</h3>
+                    <p className="text-muted-foreground leading-relaxed">Identify the best buyer by calculating the Farmer Net-Value Score (Market Price minus Transport Costs)</p>
                     
                     {/* Feature badge */}
                     <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-semibold text-green-400">
                       <CheckCircle className="w-3 h-3" />
-                      Smart Escrow
+                      Market Intelligence
                     </div>
                   </div>
                 </div>
@@ -494,7 +470,7 @@ const Index = () => {
             transition={{ delay: 2.3 }}
           >
             <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
-              <span className="text-foreground">Why Choose BIMA?</span>
+              <span className="text-foreground">Why Choose AkiLimo?</span>
             </h2>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
@@ -503,8 +479,8 @@ const Index = () => {
                 whileHover={{ scale: 1.05 }}
                 transition={{ delay: 2.4 }}
               >
-                <div className="text-3xl font-black text-primary mb-2">100%</div>
-                <div className="text-sm text-muted-foreground">Fraud Prevention</div>
+                <div className="text-3xl font-black text-primary mb-2">15%</div>
+                <div className="text-sm text-muted-foreground">Higher Net Profit</div>
               </motion.div>
               
               <motion.div
@@ -512,8 +488,8 @@ const Index = () => {
                 whileHover={{ scale: 1.05 }}
                 transition={{ delay: 2.5 }}
               >
-                <div className="text-3xl font-black text-accent mb-2">5min</div>
-                <div className="text-sm text-muted-foreground">Transaction Time</div>
+                <div className="text-3xl font-black text-accent mb-2">20%</div>
+                <div className="text-sm text-muted-foreground">Fuel Savings</div>
               </motion.div>
               
               <motion.div
@@ -521,8 +497,8 @@ const Index = () => {
                 whileHover={{ scale: 1.05 }}
                 transition={{ delay: 2.6 }}
               >
-                <div className="text-3xl font-black text-green-400 mb-2">24/7</div>
-                <div className="text-sm text-muted-foreground">Global Access</div>
+                <div className="text-3xl font-black text-green-400 mb-2">90%</div>
+                <div className="text-sm text-muted-foreground">Yield Accuracy</div>
               </motion.div>
               
               <motion.div
@@ -530,8 +506,8 @@ const Index = () => {
                 whileHover={{ scale: 1.05 }}
                 transition={{ delay: 2.7 }}
               >
-                <div className="text-3xl font-black text-blue-400 mb-2">0%</div>
-                <div className="text-sm text-muted-foreground">Hidden Fees</div>
+                <div className="text-3xl font-black text-blue-400 mb-2">100%</div>
+                <div className="text-sm text-muted-foreground">Farmer Centred</div>
               </motion.div>
             </div>
           </motion.div>
@@ -545,19 +521,19 @@ const Index = () => {
           >
             <div className="flex items-center gap-2">
               <CheckCircle className="w-5 h-5 text-green-400" />
-              <span>Eliminates Land Fraud</span>
+              <span>Mitigates Climate Risk</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle className="w-5 h-5 text-blue-400" />
-              <span>Minutes vs Months</span>
+              <span>Terrain-Aware Logistics</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle className="w-5 h-5 text-purple-400" />
-              <span>Community-Verified Trust</span>
+              <span>Transparent Market Prices</span>
             </div>
             <div className="flex items-center gap-2">
               <CheckCircle className="w-5 h-5 text-accent" />
-              <span>Carbon-Negative Network</span>
+              <span>Data-Driven Resilience</span>
             </div>
           </motion.div>
           </div>
