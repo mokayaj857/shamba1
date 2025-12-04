@@ -8,8 +8,8 @@ const Navbar: React.FC = () => {
 
   const navItems = [
     { path: '/', label: 'Home', icon: null },
-    { path: '/marketplace', label: 'Marketplace', icon: MapPin },
-    { path: 'land', label: 'Inspectors', icon: Award },
+    { path: '/check-resilience', label: 'Marketplace', icon: MapPin },
+    { path: '/inspectors', label: 'Inspectors', icon: Award },
     { path: '/how-it-works', label: 'How It Works', icon: null },
     { path: '/ecosystem', label: 'Ecosystem', icon: BarChart3 }
   ];
@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent"
             >
-              BIMA
+              AkiLimo
             </motion.div>
           </Link>
 
