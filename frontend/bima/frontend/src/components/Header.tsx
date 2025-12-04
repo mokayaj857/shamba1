@@ -63,7 +63,7 @@ const Header: React.FC = () => {
                   }}
                 />
                 <div className="relative px-4 py-2 bg-gradient-to-r from-primary to-accent rounded-lg">
-                  <span className="text-2xl font-black text-background">Bima</span>
+                  <span className="text-2xl font-black text-background">AkiLimo</span>
                 </div>
               </div>
             </Link>
