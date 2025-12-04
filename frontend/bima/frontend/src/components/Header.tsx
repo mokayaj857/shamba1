@@ -11,10 +11,10 @@ const Header: React.FC = () => {
   // Wallet functionality removed - no-op header state
 
   const navLinks = [
-    { name: "Home", id: "home", to: "/" },
-    { name: "Marketplace", id: "marketplace", to: "/marketplace" },
-    { name: "Inspectors", id: "inspectors", to: "/inspectors" },
-    { name: "Inspector Dashboard", id: "inspector-dashboard", to: "/inspector-dashboard" },
+    { name: "Geospatial Analysis", id: "home", to: "/" },
+    { name: "Network Design", id: "Network Design", to: "/marketplace" },
+    { name: "Cost Simulation", id: "Cost Simulation", to: "/inspectors" },
+    { name: "Dashboard", id: "Dashboard", to: "/inspector-dashboard" },
     { name: "How It Works", id: "how-it-works", to: "/how-it-works" },
   ];
 

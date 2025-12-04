@@ -1,0 +1,10 @@
+# Ignore environment files
+.env
+Smart/.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env.*

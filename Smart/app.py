@@ -33,7 +33,7 @@ current_tab = st.sidebar.radio("Navigation", tabs)
 # Tab 1: Instructions
 if current_tab == "📚 Instructions":
     st.markdown("""
-    # 🌾 Smart Agricultural Connectivity Planner (SACP)
+    # 🌾 Shambasentinel
 
     Welcome to the **Smart Agricultural Connectivity Planner**! This app helps rural farmers and policymakers optimize internet connectivity for agricultural hubs using AI-powered tools.
 
