@@ -1,20 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import HowItWorks from './components/HowItWorks';
 import Landing from './components/Landing';
-import Hero from './components/Hero';
 import Chatbot from './Pages/Chatbot';
-import EscrowDemo from './Pages/EscrowDemo';
+
 import Layout from './components/Layout';
-import InspectorsPage from './components/InspectorsPage';
-import InspectorDashboard from './components/InspectorDashboard';
-import SellerDashboard from './components/SellerDashboard';
+
+
 import LandDetails from './components/LandDetails';
 
 import './index.css';
 import { ToastProvider } from './components/toast/ToastProvider';
 
+;
 
 const router = createBrowserRouter([
   // Landing page with clear value proposition
@@ -22,26 +21,12 @@ const router = createBrowserRouter([
     path: '/',
     element: <Layout showHeader><Landing /></Layout>,
   },
-  // Core marketplace functionality
+ 
+  
+  
+  
   {
-    path: '/marketplace',
-    element: <Layout showHeader><Hero /></Layout>,
-  },
-  {
-    path: '/sell-land',
-    element: <Layout showHeader><SellerDashboard /></Layout>,
-  },
-  {
-    path: '/inspectors',
-    element: <Layout showHeader><InspectorsPage /></Layout>,
-   
-  },
-  {
-    path: '/inspector-dashboard',
-    element: <Layout showHeader><InspectorDashboard /></Layout>,
-  },
-  {
-    path: '/land/:landId',
+    path: '/land',
     element: <Layout showHeader><LandDetails /></Layout>,
     
   },
@@ -55,14 +40,8 @@ const router = createBrowserRouter([
     path: '/trusted',
     element: <Navigate to="/inspectors" replace />,
   },
-  {
-    path: '/hero',
-    element: <Navigate to="/marketplace" replace />,
-  },
-  {
-    path: '/wallet',
-    element: <Navigate to="/sell-land" replace />,
-  },
+  
+  
   {
     path: '/discover',
     element: <Navigate to="/how-it-works" replace />,
@@ -71,12 +50,7 @@ const router = createBrowserRouter([
     path: '/chatbot',
     element: <Layout showHeader><Chatbot /></Layout>,
   },
-  // Escrow demo/testing route
-  {
-    path: '/escrow-demo',
-    element: <Layout showHeader><EscrowDemo /></Layout>,
-  },
-  // Wildcard: redirect unknown paths to root
+  
   {
     path: '*',
     element: <Navigate to="/" replace />,
