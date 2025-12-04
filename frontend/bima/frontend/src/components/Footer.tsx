@@ -27,7 +27,7 @@ export const Footer = () => {
     { icon: Twitter, href: "https://twitter.com/BBjuniour", label: "Twitter" },
     { icon: Github, href: "https://github.com/mokayaj857", label: "Github" },
     { icon: Linkedin, href: "https://www.linkedin.com/in/john-mokaya-3b926a261", label: "LinkedIn" },
-    { icon: Mail, href: "6940.2021@students.ku.ac.ke", label: "Email" },
+    { icon: Mail, href: "akilimo.farmer@gmail.com", label: "Email" },
   ];
 
   const containerVariants = {
@@ -142,8 +142,7 @@ export const Footer = () => {
             </div>
             
             <p className="text-muted-foreground text-sm leading-relaxed mb-6 max-w-sm">
-              Revolutionizing land ownership with Polkadot technology. 
-              Secure, transparent, and verified property transactions on Polkadot.
+              Revolutionizing agriculture by connecting Climate Resilience (AI Yields) to Market Access (Geospatial Logistics).
             </p>
 
             {/* Contact Info */}
@@ -170,7 +169,7 @@ export const Footer = () => {
                 transition={{ duration: 0.2 }}
               >
                 <Mail className="w-4 h-4" />
-                <span>6940.2021@students.ku.ac.ke</span>
+                <span>akilimo.farmer@gmail.com</span>
               </motion.div>
             </div>
           </motion.div>
@@ -288,8 +287,8 @@ export const Footer = () => {
             variants={itemVariants}
             className="text-sm text-muted-foreground"
           >
-            © {new Date().getFullYear()} Bima. All rights reserved. 
-            <span className="ml-2 text-primary/60">Built on Polkadot</span>
+            © {new Date().getFullYear()} AkiLimo. All rights reserved. 
+          
           </motion.p>
 
           {/* Social Links */}
@@ -334,7 +333,7 @@ export const Footer = () => {
                 ease: "easeInOut",
               }}
             />
-            <span className="text-xs text-primary font-medium">Secured by Polkadot</span>
+            
           </motion.div>
         </motion.div>
       </div>

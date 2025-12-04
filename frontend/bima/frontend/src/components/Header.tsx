@@ -149,9 +149,6 @@ const Header: React.FC = () => {
               ))}
               <div className="flex items-center justify-between pt-4 border-t border-border/50">
                 <ThemeToggle />
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">Wallet support disabled</span>
-                </div>
               </div>
             </div>
           </motion.div>
