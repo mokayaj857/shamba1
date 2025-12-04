@@ -8,7 +8,7 @@ const Navbar: React.FC = () => {
 
   const navItems = [
     { path: '/', label: 'Home', icon: null },
-    { path: '/marketplace', label: 'Marketplace', icon: MapPin },
+    { path: '/check-resilience', label: 'Marketplace', icon: MapPin },
     { path: '/inspectors', label: 'Inspectors', icon: Award },
     { path: '/how-it-works', label: 'How It Works', icon: null },
     { path: '/ecosystem', label: 'Ecosystem', icon: BarChart3 }
