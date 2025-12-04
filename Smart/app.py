@@ -35,7 +35,7 @@ if current_tab == "📚 Instructions":
     st.markdown("""
     # 🌾 Shambasentinel
 
-    Welcome to the **Smart Agricultural Connectivity Planner**! This app helps rural farmers and policymakers optimize internet connectivity for agricultural hubs using AI-powered tools.
+    Welcome to the **AKILIMO**! This app helps rural farmers and policymakers optimize internet connectivity for agricultural hubs using AI-powered tools.
 
     ---
 
@@ -93,13 +93,13 @@ if current_tab == "📚 Instructions":
 
     ## 📥 **Sample Data**
     Download sample GeoJSON files to test the app:
-    [Sample Data Download](https://github.com/hanzlikhan/Smart-Agricultural-Connectivity-Planner/tree/new-feature/Data)
+    [Sample Data Download](https://github.com/mokayaj857/shamba1/blob/main/backend/wsgi.py)
 
     ---
 
     ## ❓ **Need Help?**
     - Check the [documentation](https://example.com/docs).
-    - Contact support: support@agri-connect.com
+    - Contact support: mokayaj857@gmail.com
     """)
     
 # Tab 2: Geospatial Analysis
