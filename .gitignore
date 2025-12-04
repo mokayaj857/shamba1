@@ -1,10 +1,37 @@
-# Ignore environment files
+# Environment variables
 .env
 Smart/.env
+.env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Frontend build directories
+frontend/bima/frontend/node_modules/
+frontend/bima/frontend/.next/
+frontend/bima/frontend/out/
+frontend/bima/frontend/build/
 
 # Python
 __pycache__/
 *.pyc
 .venv/
 venv/
-.env.*
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local development
+.DS_Store
+*.pem

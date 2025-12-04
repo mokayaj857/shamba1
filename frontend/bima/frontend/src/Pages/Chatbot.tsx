@@ -137,7 +137,7 @@ const StunningChatbot = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer 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'
+          'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
         },
         body: JSON.stringify({
           model: 'gpt-3.5-turbo',

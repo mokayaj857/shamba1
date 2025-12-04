@@ -1,4 +1,4 @@
-export const OPENAI_API_KEY = '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';
+export const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY || '';
 
 export const SYSTEM_PROMPT = `You are AkiLimo, an AI assistant for smallholder farmers in Kenya, specializing in climate risk modeling and market intelligence. Your role is to provide clear, actionable advice about:
 
