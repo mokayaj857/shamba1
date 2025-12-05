@@ -12,9 +12,9 @@ const resources = {
       dashboard: 'Dashboard',
       how_it_works: 'How It Works',
 
-      welcome_title: 'Decentralized Land Marketplace',
-      explore_marketplace: 'Explore Marketplace',
-      list_your_land: 'List Your Land',
+      welcome_title: 'From Soil to Sale',
+      explore_marketplace: 'Check Drought Resilience',
+      list_your_land: 'Get Started',
 
       price_forecast_title: 'Price Forecast',
       predicted_yield_metric: 'Predicted Yield (tons/ha)',
