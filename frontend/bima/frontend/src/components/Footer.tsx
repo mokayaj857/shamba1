@@ -1,3 +1,4 @@
+import React from 'react';
 import { motion } from "framer-motion";
 import { Shield, Twitter, Github, Linkedin, Mail, MapPin, Phone } from "lucide-react";
 

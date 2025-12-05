@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shamba Bima</title>
+    <script>
+      // Prevent multiple ethereum provider conflicts
+      (function() {
+        const global = window || globalThis;
+        if (global.ethereum) {
+          global.ethereum.autoRefreshOnNetworkChange = false;
+          
+          // Store the original ethereum provider
+          if (!global.originalEthereum) {
+            global.originalEthereum = { ...global.ethereum };
+          }
+          
+          // Prevent redefinition of ethereum
+          Object.defineProperty(global, 'ethereum', {
+            get() {
+              return global.originalEthereum;
+            },
+            set(value) {
+              console.log('Prevented ethereum provider override');
+              return false;
+            },
+            configurable: false,
+            enumerable: true
+          });
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
