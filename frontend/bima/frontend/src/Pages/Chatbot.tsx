@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageSquare, Send, X, Shield, Bot } from 'lucide-react';
+// === API KEY SETUP ===
+// Replace OPENROUTER_API_KEY in fetchBotReply with your actual OpenRouter API key
+import { MessageSquare, Send, X, Shield } from 'lucide-react';
 import bot from '../assets/bot.png';
 import bot1 from '../assets/bot1.png';
 import bot3 from '../assets/bot3.png';
@@ -8,19 +10,42 @@ const StunningChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     {
-      text: "Welcome to the future of AI assistance! 🚀 How can I help you today?",
+      text: "Welcome to Your AkiLimo Assistant 🌾! I can answer agriculture, climate, and market questions for Kenyan farmers. Please allow location access for area-specific advice.",
       sender: 'bot',
       timestamp: new Date(),
     },
   ]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [location, setLocation] = useState<{lat: number, lon: number} | null>(null);
+  // Removed weather state
+  const [locationStatus, setLocationStatus] = useState<string>('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+  // Request location on open
+  useEffect(() => {
+    if (isOpen && !location) {
+      if (navigator.geolocation) {
+        setLocationStatus('Requesting location...');
+        navigator.geolocation.getCurrentPosition(
+          (pos) => {
+            setLocation({ lat: pos.coords.latitude, lon: pos.coords.longitude });
+            setLocationStatus('Location access granted.');
+          },
+          (err) => {
+            setLocationStatus('Location access denied.');
+          }
+        );
+      } else {
+        setLocationStatus('Geolocation not supported.');
+      }
+    }
+  }, [isOpen, location]);
 
+  // Removed weather effect
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -123,28 +148,26 @@ const StunningChatbot = () => {
     };
   };
 
+  // Use OpenRouter API for agricultural Q&A
   const fetchBotReply = async (userText: string): Promise<string> => {
-    // First, check if userText is empty or too short
     if (!userText || userText.trim().length < 2) {
       return "Please provide more details about your farming or market question so I can help you better.";
     }
-
-    // Add a small delay to prevent rate limiting
     await new Promise(resolve => setTimeout(resolve, 1000));
-
     try {
-      const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.REACT_APP_OPENAI_API_KEY}`
+          // PLACE YOUR OPENROUTER API KEY BELOW:
+          'Authorization': `Bearer Sk-or-v1-bd5f9e46a2bd3e38070ac4d61a4534b111dea366e675f02729f7b378101fea59` // <-- Replace this with your actual OpenRouter API key
         },
         body: JSON.stringify({
-          model: 'gpt-3.5-turbo',
+          model: 'openai/gpt-3.5-turbo',
           messages: [
             {
               role: 'system',
-              content: `You are AkiLimo, an AI assistant for smallholder farmers in Kenya, specializing in climate risk modeling and market intelligence. Your role is to provide clear, actionable advice about farming, market prices, and logistics in Kenya.`
+              content: `You are Your AkiLimo Assistant, an AI for smallholder farmers in Kenya. Use location (${location?.lat ?? 'unknown'}, ${location?.lon ?? 'unknown'}) to provide climate-smart, market, and logistics advice. Be specific to Kenyan context.`
             },
             {
               role: 'user',
@@ -155,38 +178,20 @@ const StunningChatbot = () => {
           max_tokens: 300
         })
       });
-
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        console.error('OpenAI API Error:', errorData);
-        
         if (response.status === 429) {
           return "I'm getting too many requests right now. Please wait a moment and try again.";
         }
-        
         throw new Error(`API request failed with status ${response.status}`);
       }
-
       const data = await response.json();
-      
-      // Add more robust error checking for the response structure
       if (!data.choices || !Array.isArray(data.choices) || data.choices.length === 0) {
-        console.error('Unexpected API response format:', data);
         return "I received an unexpected response. Could you please rephrase your question?";
       }
-      
       return data.choices[0]?.message?.content || "I'm not sure how to respond to that. Could you provide more details?";
-      
-    } catch (error) {
-      console.error('Error in fetchBotReply:', error);
-      
-      // Return a fallback response that helps the user
-      return `I'm having some technical difficulties. Here's what you can try:
-1. Check your internet connection
-2. Wait a moment and try again
-3. Ask a different question
-
-Error details: ${error.message || 'Unknown error'}`;
+    } catch (error: any) {
+      return `I'm having some technical difficulties. Please try again later.\nError details: ${error.message || 'Unknown error'}`;
     }
   };
 
@@ -329,15 +334,15 @@ Error details: ${error.message || 'Unknown error'}`;
           {/* Animated Rings */}
           {!isOpen && (
             <>
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 animate-pulse-ring"></div>
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 animate-pulse-ring" style={{ animationDelay: '1s' }}></div>
+              <div className="absolute inset-0 rounded-full bg-linear-to-r from-purple-600 to-pink-600 animate-pulse-ring"></div>
+              <div className="absolute inset-0 rounded-full bg-linear-to-r from-purple-600 to-pink-600 animate-pulse-ring" style={{ animationDelay: '1s' }}></div>
             </>
           )}
           
           {/* Main Button */}
           <button
             onClick={toggleChat}
-            className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 text-white p-5 rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all duration-500 transform hover:scale-110 active:scale-95 animate-gradient-shift animate-glow"
+            className="relative bg-linear-to-r from-purple-600 via-pink-600 to-purple-600 text-white p-5 rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all duration-500 transform hover:scale-110 active:scale-95 animate-gradient-shift animate-glow"
             aria-label="Toggle chat"
           >
             <div className="relative">
@@ -352,7 +357,7 @@ Error details: ${error.message || 'Unknown error'}`;
         
         {/* Notification Badge */}
         {!isOpen && (
-          <div className="absolute -top-2 -right-2 w-7 h-7 bg-gradient-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center text-white text-xs font-bold animate-bounce shadow-lg">
+          <div className="absolute -top-2 -right-2 w-7 h-7 bg-linear-to-r from-red-500 to-pink-500 rounded-full flex items-center justify-center text-white text-xs font-bold animate-bounce shadow-lg">
             AI
           </div>
         )}
@@ -365,7 +370,7 @@ Error details: ${error.message || 'Unknown error'}`;
         {/* Glass Effect Container */}
         <div className="glass-effect backdrop-blur-2xl">
           {/* Chat Header */}
-          <div className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 animate-gradient-shift text-white p-6 overflow-hidden">
+          <div className="relative bg-linear-to-r from-purple-600 via-pink-600 to-purple-600 animate-gradient-shift text-white p-6 overflow-hidden">
             {/* Header Background Pattern */}
             <div className="absolute inset-0 opacity-10">
               <div className="absolute inset-0" style={{ 
@@ -377,19 +382,19 @@ Error details: ${error.message || 'Unknown error'}`;
               <div className="flex items-center space-x-3">
                 <div className="relative">
                   {/* AI Avatar with Hacker Image */}
-                  <div className="w-12 h-12 rounded-2xl overflow-hidden bg-gradient-to-br from-purple-500 to-pink-500 p-0.5 animate-glow">
+                  <div className="w-12 h-12 rounded-2xl overflow-hidden bg-linear-to-br from-purple-500 to-pink-500 p-0.5 animate-glow">
                     <div className="w-full h-full bg-black rounded-2xl overflow-hidden">
                       <img 
                         src={bot} 
-                        alt="BIMA Assistant"
+                        alt="AI Assistant"
                         className="w-full h-full object-cover opacity-80"
                       />
                     </div>
                   </div>
-                  <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
+                  <div className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-linear-to-r from-green-400 to-emerald-500 rounded-full border-2 border-white shadow-lg animate-pulse"></div>
                 </div>
                 <div>
-                  <h2 className="font-bold text-lg text-shadow-glow">BIMA AI Assistant</h2>
+                  <h2 className="font-bold text-lg text-shadow-glow">AkiLimo Assistant</h2>
                 </div>
               </div>
               <button 
@@ -403,7 +408,7 @@ Error details: ${error.message || 'Unknown error'}`;
           
           
           {/* Chat Messages */}
-          <div className="h-[420px] overflow-y-auto p-6 bg-gradient-to-b from-white/95 to-purple-50/95 backdrop-blur-xl">
+          <div className="h-[420px] overflow-y-auto p-6 bg-linear-to-b from-white/95 to-purple-50/95 backdrop-blur-xl">
             {messages.map((message, index) => (
               <div
                 key={index}
@@ -412,10 +417,10 @@ Error details: ${error.message || 'Unknown error'}`;
                 }`}
               >
                 {/* Avatar */}
-                <div className={`w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg ${
+                <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 shadow-lg ${
                   message.sender === 'user' 
-                    ? 'bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500' 
-                    : 'bg-gradient-to-br from-purple-600 via-pink-600 to-purple-600 p-0.5'
+                    ? 'bg-linear-to-br from-blue-500 via-cyan-500 to-teal-500'
+                    : 'bg-linear-to-br from-purple-600 via-pink-600 to-purple-600 p-0.5'
                 }`}>
                   {message.sender === 'user' ? (
                     <div className="w-full h-full bg-white rounded-2xl overflow-hidden">
@@ -442,7 +447,7 @@ Error details: ${error.message || 'Unknown error'}`;
                 }`}>
                   <div className={`p-4 rounded-2xl shadow-lg message-hover transition-all duration-300 ${
                     message.sender === 'user'
-                      ? 'bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500 text-white rounded-br-sm'
+                      ? 'bg-linear-to-br from-blue-500 via-cyan-500 to-teal-500 text-white rounded-br-sm'
                       : 'bg-white text-gray-800 rounded-bl-sm border-2 border-purple-100'
                   }`}>
                     <p className="text-sm leading-relaxed font-medium">{message.text}</p>
@@ -457,7 +462,7 @@ Error details: ${error.message || 'Unknown error'}`;
             {/* Typing Indicator */}
             {isLoading && (
               <div className="mb-6 flex items-end gap-3 animate-slide-in-left">
-                <div className="w-10 h-10 rounded-2xl flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-purple-600 via-pink-600 to-purple-600 shadow-lg p-0.5">
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 bg-linear-to-br from-purple-600 via-pink-600 to-purple-600 shadow-lg p-0.5">
                   <div className="w-full h-full bg-black rounded-2xl overflow-hidden flex items-center justify-center">
                     <img 
                       src={bot} 
@@ -468,9 +473,9 @@ Error details: ${error.message || 'Unknown error'}`;
                 </div>
                 <div className="bg-white p-4 rounded-2xl rounded-bl-sm shadow-lg border-2 border-purple-100">
                   <div className="flex space-x-2">
-                    <div className="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 animate-bounce"></div>
-                    <div className="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                    <div className="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                    <div className="w-3 h-3 rounded-full bg-linear-to-r from-purple-500 to-pink-500 animate-bounce"></div>
+                    <div className="w-3 h-3 rounded-full bg-linear-to-r from-purple-500 to-pink-500 animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    <div className="w-3 h-3 rounded-full bg-linear-to-r from-purple-500 to-pink-500 animate-bounce" style={{ animationDelay: '0.4s' }}></div>
                   </div>
                 </div>
               </div>
@@ -480,7 +485,7 @@ Error details: ${error.message || 'Unknown error'}`;
           
           {/* Chat Input */}
           <div className="p-5 bg-white/95 backdrop-blur-xl border-t-2 border-purple-100">
-            <div className="flex items-center gap-3 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl p-1 transition-all duration-300 focus-within:ring-4 focus-within:ring-purple-300 focus-within:shadow-xl">
+            <div className="flex items-center gap-3 bg-linear-to-r from-purple-50 to-pink-50 rounded-2xl p-1 transition-all duration-300 focus-within:ring-4 focus-within:ring-purple-300 focus-within:shadow-xl">
               <input
                 type="text"
                 value={inputMessage}
@@ -494,7 +499,7 @@ Error details: ${error.message || 'Unknown error'}`;
                 onClick={handleSubmit}
                 className={`p-3.5 rounded-xl transition-all duration-300 transform ${
                   inputMessage.trim() 
-                    ? 'bg-gradient-to-r from-purple-600 via-pink-600 to-purple-600 text-white hover:shadow-2xl hover:scale-105 active:scale-95 animate-gradient-shift' 
+                    ? 'bg-linear-to-r from-purple-600 via-pink-600 to-purple-600 text-white hover:shadow-2xl hover:scale-105 active:scale-95 animate-gradient-shift' 
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                 }`}
                 disabled={isLoading || !inputMessage.trim()}
@@ -503,8 +508,8 @@ Error details: ${error.message || 'Unknown error'}`;
               </button>
             </div>
             
-            {/* Footer Info */}
-            <div className="flex items-center justify-between mt-3 text-xs text-gray-500">
+            {/* Footer Info + Location/Weather */}
+            <div className="flex flex-col gap-1 mt-3 text-xs text-gray-500">
               <div className="flex items-center gap-2">
                 <Shield className="w-3 h-3 text-purple-500" />
                 <span>Encrypted & Secure</span>
@@ -512,6 +517,11 @@ Error details: ${error.message || 'Unknown error'}`;
               <div className="flex items-center gap-1">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
                 <span>AI Active</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-bold">Location:</span>
+                <span>{locationStatus}</span>
+                {location && <span>({location.lat.toFixed(2)}, {location.lon.toFixed(2)})</span>}
               </div>
             </div>
           </div>

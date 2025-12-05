@@ -5,7 +5,7 @@ import i18n from './i18n';
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import HowItWorks from './components/HowItWorks';
 import Landing from './components/Landing';
-import Chatbot from './Pages/Chatbot';
+import Chatbot from './Pages/Chatbot.tsx';
 
 import Layout from './components/Layout';
 
